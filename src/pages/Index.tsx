@@ -1,314 +1,207 @@
-
-import { useEffect } from "react";
 import Layout from "@/components/Layout";
 import HeroSection from "@/components/HeroSection";
-import { motion } from "framer-motion";
-import { ArrowRight, Code, GraduationCap, Briefcase, Star, ExternalLink, Github } from "lucide-react";
+import ProjectCard from "@/components/ProjectCard";
+import { Cta } from "@/components/Cta";
+import { Reveal, SectionHeading, Marquee, CountUp } from "@/components/fx";
 import { Link } from "react-router-dom";
+import { ArrowUpRight, Server, BrainCircuit, ShieldCheck } from "lucide-react";
+import { featuredProjects, experience, marqueeSkills, metrics } from "@/data/content";
+
+const capabilities = [
+  {
+    icon: Server,
+    title: "Backend & APIs",
+    body: "Public REST + MCP channels, async job pipelines, idempotent credit metering, HMAC-scoped keys, and fail-closed Redis — on FastAPI + PostgreSQL.",
+  },
+  {
+    icon: BrainCircuit,
+    title: "AI / ML",
+    body: "PyTorch, LLMs & RAG, model compression, and computer vision — research-grade pipelines shipped as installable, tested libraries.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Correctness-first systems",
+    body: "Double-entry ledgers, chaos harnesses, and model-vs-RTL verification — guarantees proven by build artifacts, not asserted.",
+  },
+];
+
+const proof = metrics.slice(0, 4);
 
 const Index = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const featuredProjects = [
-    {
-      title: "Interpretable AI for Census-Independent Population Estimation leveraging space technology",
-      description: "Developed a deep learning pipeline to estimate population from satellite imagery by detecting buildings using YOLOv8 and incorporating elevation data (DSM & DTM) to infer floor counts. Achieved over 90% accuracy and built a GUI for real-time input and visualization.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
-      tags: ["Python", "Machine Learning", "AI", "Deep Learning", "Satellite Imagery", "YOLOv8", "GUI", "Population Estimation"],
-      link: "/projects",
-      code: "https://github.com/Yuvrraaj/Population-Estimation"
-    },
-    {
-      title: "OCR-Based Product Info Extractor",
-      description: "Built a standalone executable application that captures product images via webcam and extracts key information like MRP and manufacturing date using OCR and image processing, with 92%+ text recognition accuracy.",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
-      tags: ["Python", "OCR", "Image Processing", "OpenCV", "GUI", "Standalone Application", "Webcam", "Text Recognition", "Product Information"],
-      link: "/projects",
-      code: "https://github.com/Yuvrraaj/OCR-Text-Extraction"
-    },
-    {
-      title: "Fruit Freshness Detection",
-      description: "Created a real-time webcam-based system that identifies fruits (banana, apple, orange, guava) and estimates freshness as a percentage using machine learning techniques, achieving ~90% classification accuracy.",
-      image: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800",
-      tags: ["Python", "Machine Learning", "Computer Vision", "OpenCV", "Real-time", "Webcam", "Fruit Detection", "Freshness Estimation"],
-      link: "/projects",
-      code: "https://github.com/Yuvrraaj/Freshness_Detection"
-    },
-  ];
-
-  const techStack = [
-    { name: "Java", proficiency: 95 },
-    { name: "Python", proficiency: 90 },
-    { name: "SQL", proficiency: 90 },
-    { name: "Machine Learning", proficiency: 85 },
-    { name: "HTML/CSS", proficiency: 85 },
-    { name: "React.js", proficiency: 80 },
-    { name: "PHP", proficiency: 80 },
-    { name: "JavaScript", proficiency: 80 },
-    { name: "Firebase", proficiency: 70 },
-    { name: "Node.js", proficiency: 70 },
-  ];
-
   return (
     <Layout>
       <HeroSection />
 
-      {/* About Section */}
-      <section className="py-24 bg-secondary/50">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <span className="inline-block py-1 px-3 rounded-full text-xs font-medium bg-teal-500/10 text-teal-400 mb-4">
-              About Me
-            </span>
-            <h2 className="text-4xl font-bold mb-6">Who I Am</h2>
-            <p className="max-w-3xl mx-auto text-muted-foreground">
-              I'm a Computer Science student specializing in AI & ML. Passionate about programming, AI integration, and building innovative web applications.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="glass-panel p-8 rounded-lg"
-            >
-              <div className="flex items-center justify-center w-16 h-16 bg-teal-500/10 rounded-lg mb-6 mx-auto">
-                <Code className="w-8 h-8 text-teal-400" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4 text-center">
-                Web Development
-              </h3>
-              <p className="text-muted-foreground text-center">
-                Experienced in building modern, responsive web applications using React.js, Next.js, and Node.js.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="glass-panel p-8 rounded-lg"
-            >
-              <div className="flex items-center justify-center w-16 h-16 bg-teal-500/10 rounded-lg mb-6 mx-auto">
-                <GraduationCap className="w-8 h-8 text-teal-400" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4 text-center">
-                Computer Science
-              </h3>
-              <p className="text-muted-foreground text-center">
-                Strong foundation in algorithms, data structures, and programming principles.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="glass-panel p-8 rounded-lg"
-            >
-              <div className="flex items-center justify-center w-16 h-16 bg-teal-500/10 rounded-lg mb-6 mx-auto">
-                <Briefcase className="w-8 h-8 text-teal-400" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4 text-center">
-                AI & Machine Learning
-              </h3>
-              <p className="text-muted-foreground text-center">
-                Specializing in artificial intelligence and machine learning algorithms and applications.
-              </p>
-            </motion.div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="mt-12 text-center"
-          >
-            <Link
-              to="/about"
-              className="inline-flex items-center px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-opacity-90 transition-all"
-            >
-              More About Me
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </motion.div>
+      {/* Tech strip */}
+      <section className="border-b border-hairline bg-canvas py-6">
+        <div className="container">
+          <Marquee duration={40}>
+            {marqueeSkills.map((skill) => (
+              <span key={skill} className="mx-5 text-sm font-medium text-ink-secondary">
+                {skill}
+                <span className="ml-10 text-hairline">/</span>
+              </span>
+            ))}
+          </Marquee>
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <span className="inline-block py-1 px-3 rounded-full text-xs font-medium bg-teal-500/10 text-teal-400 mb-4">
-              Skills
-            </span>
-            <h2 className="text-4xl font-bold mb-6">Tech Stack</h2>
-            <p className="max-w-3xl mx-auto text-muted-foreground">
-              A collection of technologies I work with to build web applications, models and solve complex problems.
+      {/* Metric proof band (dark) */}
+      <section className="deep-gradient">
+        <div className="container max-w-editorial py-20 md:py-24">
+          <Reveal>
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-white/50">
+              The receipts
             </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            {techStack.map((tech, index) => (
-              <motion.div
-                key={tech.name}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="glass-panel p-6 rounded-lg"
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-medium">{tech.name}</h3>
-                  <span className="text-sm text-muted-foreground">{tech.proficiency}%</span>
+            <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold tracking-display text-white sm:text-4xl">
+              Systems that prove themselves
+            </h2>
+          </Reveal>
+          <div className="mt-14 grid grid-cols-2 gap-x-10 gap-y-12 lg:grid-cols-4">
+            {proof.map((m, i) => (
+              <Reveal key={m.label} delay={i * 0.08}>
+                <div>
+                  <div className="font-display text-5xl font-black leading-none tracking-display text-white sm:text-[3.5rem]">
+                    <CountUp
+                      value={m.value}
+                      decimals={m.decimals}
+                      prefix={m.prefix}
+                      suffix={m.suffix}
+                    />
+                  </div>
+                  <div className="mt-4 text-sm font-medium text-white">{m.label}</div>
+                  <div className="mt-1 text-[13px] text-white/50">{m.sub}</div>
                 </div>
-                <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-teal-500"
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${tech.proficiency}%` }}
-                    transition={{ duration: 1, delay: 0.3 }}
-                    viewport={{ once: true }}
-                  />
-                </div>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Featured Projects */}
-      <section className="py-24 bg-secondary/50" id="projects">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <span className="inline-block py-1 px-3 rounded-full text-xs font-medium bg-teal-500/10 text-teal-400 mb-4">
-              Portfolio
-            </span>
-            <h2 className="text-4xl font-bold mb-6">Featured Projects</h2>
-            <p className="max-w-3xl mx-auto text-muted-foreground">
-              A selection of my recent web development and programming projects.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredProjects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="glass-panel rounded-lg overflow-hidden"
-              >
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
+      {/* Capabilities */}
+      <section className="bg-canvas py-20 md:py-24">
+        <div className="container max-w-editorial">
+          <SectionHeading
+            eyebrow="What I do"
+            title="Engineering across the stack, anchored in backend & ML"
+            description="Three areas where I go deep — from public API surfaces to research-grade ML to systems that prove their own correctness."
+          />
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {capabilities.map((c, i) => (
+              <Reveal key={c.title} delay={i * 0.08}>
+                <div className="hairline-card h-full p-6">
+                  <span className="grid h-12 w-12 place-items-center rounded-lg bg-surface">
+                    <c.icon className="h-6 w-6 text-primary" />
+                  </span>
+                  <h3 className="mt-5 font-display text-xl font-semibold text-ink">{c.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-ink-secondary">{c.body}</p>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                  <p className="text-muted-foreground mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="text-xs py-1 px-3 bg-secondary rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex justify-between">
-                    <Link
-                      to={project.link}
-                      className="inline-flex items-center text-teal-400 hover:text-teal-300 transition-colors"
-                    >
-                      View Details
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                    <a
-                      href={project.code}
-                      className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="mr-1.5 h-4 w-4" />
-                      Source Code
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="mt-12 text-center"
-          >
-            <Link
-              to="/projects"
-              className="inline-flex items-center px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-opacity-90 transition-all"
-            >
-              View All Projects
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </motion.div>
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section className="py-24" id="contact">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="glass-panel p-12 rounded-lg max-w-4xl mx-auto text-center"
-          >
-            <div className="flex items-center justify-center w-16 h-16 bg-teal-500/10 rounded-full mb-6 mx-auto">
-              <Star className="w-8 h-8 text-teal-400" />
+      {/* Selected work */}
+      <section className="border-t border-hairline bg-canvas py-20 md:py-24">
+        <div className="container max-w-editorial">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeading
+              eyebrow="Selected work"
+              title="Projects with receipts"
+              description="A slice of what I've built. Each links to source — several ship live demos or reproducible proofs."
+            />
+            <Reveal delay={0.1}>
+              <Link
+                to="/projects"
+                className="group inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-link-active"
+              >
+                All projects
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </Reveal>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {featuredProjects.map((project, i) => (
+              <Reveal key={project.id} delay={(i % 3) * 0.08}>
+                <ProjectCard project={project} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Experience snapshot */}
+      <section className="border-t border-hairline bg-canvas py-20 md:py-24">
+        <div className="container max-w-editorial">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeading
+              eyebrow="Experience"
+              title="Where I've shipped"
+              description="From a space-tech research lab to an early-stage AI platform."
+            />
+            <Reveal delay={0.1}>
+              <Link
+                to="/experience"
+                className="group inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-link-active"
+              >
+                Full timeline
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </Reveal>
+          </div>
+          <div className="mt-12 divide-y divide-hairline border-y border-hairline">
+            {experience.map((job, i) => (
+              <Reveal key={job.company} delay={i * 0.06}>
+                <div className="grid gap-3 py-7 sm:grid-cols-[1fr_2fr] sm:gap-10">
+                  <div>
+                    <div className="text-sm text-ink-secondary">{job.period}</div>
+                    <h3 className="mt-1.5 font-display text-lg font-semibold text-ink">{job.role}</h3>
+                    <div className="mt-0.5 text-sm text-primary">{job.company}</div>
+                  </div>
+                  <div>
+                    <p className="text-[15px] leading-relaxed text-ink-secondary">{job.summary}</p>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {job.stack.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-md border border-hairline px-2 py-0.5 text-[12px] text-ink-secondary"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA band (dark) */}
+      <section className="bg-canvas pb-24 pt-4">
+        <div className="container max-w-editorial">
+          <Reveal>
+            <div className="deep-gradient overflow-hidden rounded-xl px-8 py-16 text-center md:px-16">
+              <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold tracking-display text-white sm:text-4xl">
+                Have a backend or ML problem worth solving well?
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-lg text-white/70">
+                Open to software-engineering and ML roles, and interesting collaborations. The
+                fastest way to reach me is a quick message.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <Cta to="/contact">
+                  Start a conversation
+                  <ArrowUpRight className="h-4 w-4" />
+                </Cta>
+                <Cta href="/resume.pdf" variant="ghost-dark">
+                  Download résumé
+                </Cta>
+              </div>
             </div>
-            <h2 className="text-3xl font-bold mb-4">Let's Work Together</h2>
-            <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-              I'm currently available for freelance work and open to new opportunities.
-              If you have a project in mind or want to collaborate, let's connect!
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center px-8 py-4 bg-teal-500 text-white rounded-lg font-medium hover:bg-opacity-90 transition-all"
-            >
-              Get in Touch
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
     </Layout>

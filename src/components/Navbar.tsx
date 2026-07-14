@@ -1,155 +1,94 @@
-
-import { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation, Link } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { useTheme } from "./ThemeProvider";
+import { cn } from "@/lib/utils";
+import { Cta } from "./Cta";
+import { ThemeToggle } from "./ThemeToggle";
+
+const links = [
+  { name: "Work", to: "/projects" },
+  { name: "Experience", to: "/experience" },
+  { name: "About", to: "/about" },
+  { name: "Résumé", to: "/resume" },
+];
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const location = useLocation();
-  const { theme } = useTheme();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
-
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Academics", path: "/academics" },
-    { name: "Projects", path: "/projects" },
-    { name: "Resume", path: "/resume" },
-    { name: "Contact", path: "/contact" },
-  ];
-
-  const navbarVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.3, ease: "easeInOut" },
-    },
-  };
-
-  const linkVariants = {
-    hidden: { opacity: 0, y: -5 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.3 },
-    }),
-  };
-
-  const mobileMenuVariants = {
-    closed: {
-      opacity: 0,
-      x: "100%",
-      transition: { duration: 0.3, ease: "easeInOut" },
-    },
-    open: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.3, ease: "easeInOut" },
-    },
-  };
-
-  const bgClass = theme === "dark" 
-    ? (isScrolled ? "py-3 bg-brand-dark/90 backdrop-blur-md shadow-md" : "py-5") 
-    : (isScrolled ? "py-3 bg-white/90 backdrop-blur-md shadow-md" : "py-5");
+  useEffect(() => setOpen(false), [location]);
 
   return (
-    <header>
-      <motion.nav
-        className={`fixed w-full z-50 transition-all duration-300 ${bgClass}`}
-        initial="hidden"
-        animate="visible"
-        variants={navbarVariants}
-      >
-        <div className="container mx-auto px-4 lg:px-8 flex justify-between items-center">
-          <NavLink to="/" className="flex items-center">
-            <motion.span
-              className="text-2xl font-bold text-brand-purple"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              YJ.
-            </motion.span>
-          </NavLink>
+    <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/90 backdrop-blur-md">
+      <nav className="container flex h-16 items-center justify-between">
+        <Link to="/" className="font-display text-lg font-bold tracking-tight text-ink" aria-label="Home">
+          Yuvraj Jha<span className="text-primary">.</span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
-            {navLinks.map((link, i) => (
-              <motion.div
-                key={link.name}
-                custom={i}
-                initial="hidden"
-                animate="visible"
-                variants={linkVariants}
-              >
-                <NavLink
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `nav-link ${isActive ? "active" : ""}`
-                  }
-                >
-                  {link.name}
-                </NavLink>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mobile Navigation Toggle */}
-          <div className="lg:hidden">
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Menu"
-              className="p-2 text-foreground"
+        {/* Center links */}
+        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
+          {links.map((link) => (
+            <NavLink
+              key={link.name}
+              to={link.to}
+              className={({ isActive }) => cn("nav-link", isActive && "font-medium text-ink")}
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </motion.button>
-          </div>
+              {link.name}
+            </NavLink>
+          ))}
         </div>
 
-        {/* Mobile Navigation Menu */}
-        <motion.div
-          className="fixed inset-y-0 right-0 w-[280px] bg-secondary/95 backdrop-blur-lg shadow-xl lg:hidden"
-          initial="closed"
-          animate={isOpen ? "open" : "closed"}
-          variants={mobileMenuVariants}
-        >
-          <div className="flex flex-col h-full pt-20 px-6 pb-6">
-            <div className="flex-1 flex flex-col space-y-4">
-              {navLinks.map((link, i) => (
+        <div className="hidden items-center gap-3 lg:flex">
+          <ThemeToggle />
+          <Cta to="/contact">Get in touch</Cta>
+        </div>
+
+        {/* Mobile controls */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <ThemeToggle />
+          <button
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="grid h-10 w-10 place-items-center rounded-md border border-hairline text-ink"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </nav>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden border-t border-hairline bg-canvas lg:hidden"
+          >
+            <div className="container flex flex-col gap-1 py-4">
+              {links.map((link) => (
                 <NavLink
                   key={link.name}
-                  to={link.path}
+                  to={link.to}
                   className={({ isActive }) =>
-                    `text-lg font-medium py-2 border-b border-muted/20 ${
-                      isActive ? "text-brand-purple" : "text-foreground"
-                    }`
+                    cn(
+                      "rounded-md px-3 py-3 text-base",
+                      isActive ? "bg-surface font-medium text-ink" : "text-ink-secondary"
+                    )
                   }
                 >
                   {link.name}
                 </NavLink>
               ))}
+              <Cta to="/contact" className="mt-2 w-full">
+                Get in touch
+              </Cta>
             </div>
-          </div>
-        </motion.div>
-      </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

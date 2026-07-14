@@ -1,92 +1,56 @@
-# 🚀 My Portfolio Website (React + TypeScript)
+# Yuvraj Jha — Portfolio
 
-## 📝 Overview
-A modern, responsive personal portfolio website designed to showcase my professional skills, projects, and experience. Built with **React** and **TypeScript** to provide a seamless, interactive user experience.
+Personal portfolio of **Yuvraj Jha** — software engineer specializing in **backend systems and AI/ML**.
 
-🌐 **Live Demo**: [Yuvraj.site](https://yuvraj-jha-portfolio.vercel.app/)
+🌐 **Live:** https://yuvraj-jha-portfolio.vercel.app/
 
-## 🛠 Technologies Stack
-- **Frontend Framework**: React 18
-- **Language**: TypeScript
-- **Build Tool**: Vite
-- **Styling**: CSS (not Tailwind)
-- **Background Effect**: react-tsparticles
-- **Routing**: React Router
+## Stack
 
-## 🌐 Project Structure
+- **Framework:** React 18 + TypeScript
+- **Build tool:** Vite
+- **Styling:** Tailwind CSS + shadcn/ui (Radix primitives)
+- **Animation:** Framer Motion (hand-rolled magnetic buttons, spotlight/tilt cards, scroll reveals, count-up metrics, aurora background)
+- **Routing:** React Router (route-level code-splitting via `React.lazy`)
+- **Contact form:** Firebase Firestore
+- **Deploy:** Vercel
 
-## 🚀 Getting Started
+## Design system
 
-### Prerequisites
-- Node.js (v16.0.0+)
-- npm (v8.0.0+)
+- **Type:** Space Grotesk (display) · Inter (body) · JetBrains Mono (data/labels)
+- **Color:** deep blue-ink base with a semantic tri-accent — indigo (interactive), mint (verified/passing), amber (recognition)
+- Full rationale in [`DESIGN_PLAN.md`](./DESIGN_PLAN.md); content source of truth in [`CONTENT_DOSSIER.md`](./CONTENT_DOSSIER.md).
 
-### Installation
-1. Clone the repository
-```bash
-git clone https://github.com/yourusername/your-portfolio.git
-cd your-portfolio
-```
+## Getting started
 
-2. Install dependencies
 ```bash
 npm install
+npm run dev      # start dev server
+npm run build    # production build
+npm run preview  # preview the build
+npm run lint     # eslint
 ```
 
-3. Start development server
-```bash
-npm run dev
+### Firebase config
+
+The contact form writes to Firestore. Copy `src/firebase/env.example.ts` to `src/firebase/env.ts` and fill in your
+Firebase web config. Web config is safe to expose to the client — access is governed by **Firestore Security Rules**,
+so lock the `contact_messages` collection to `create`-only from clients and read submissions in the Firebase console.
+
+## Structure
+
 ```
-4. Production Build (Optional)
-```bash
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
+src/
+  components/        UI + layout (Navbar, Footer, Hero, cards)
+    fx/              motion/effect primitives (Reveal, Magnetic, SpotlightCard, …)
+    ui/              shadcn/ui primitives
+  data/content.ts    single source of truth for site content
+  pages/             Home, About, Experience, Projects, Resume, Contact, 404
+  firebase/          Firestore config
+  services/          contact submission
 ```
-## ✨ Key Features
-- Interactive Particle.js Background (react-tsparticles)
-- Minimal & Clean UI
-- Fully Responsive Design
-- Projects Showcase
-- Academics Page 
 
-## 📦 Deployment
-- Easily deployable on:
-- Vercel(I've used vercel, but you are free to any of the below)
-- Netlify
-- GitHub Pages
+## License
 
-Example Vercel Deployment
-```bash
-# Install Vercel CLI
-npm install -g vercel
+MIT. Attribution appreciated.
 
-# Deploy
-vercel --prod
-```
-## 🤝 Contributing
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📜 License
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## 🙏 Acknowledgments
-- React Community
-- Vite.js Team
-- Tailwind CSS
-- Framer Motion
-- TypeScript Team
-
----
-
-**Created by Yuvraj**
-
-**📌 Note**: This portfolio template is open-source. While free to use, attribution is appreciated..
-
-
+— Built by Yuvraj Jha.
