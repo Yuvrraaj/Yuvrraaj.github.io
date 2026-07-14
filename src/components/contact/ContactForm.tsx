@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Send, CheckCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { contactService, ContactMessageInsert } from "@/services/contactService";
+import { profile } from "@/data/content";
 import { cn } from "@/lib/utils";
+
+// Submissions are emailed straight to this inbox via FormSubmit — no server,
+// no database. FormSubmit auto-sets reply-to from the sender's email, so replies
+// go directly to them. (First-ever submission triggers a one-time activation email.)
+const FORM_ENDPOINT = `https://formsubmit.co/ajax/${encodeURIComponent(profile.email)}`;
 
 const inputClass =
   "w-full rounded-md border border-hairline bg-canvas px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-secondary/70 focus:border-algolia-ring focus:ring-2 focus:ring-algolia-ring/25 disabled:opacity-50";
@@ -38,16 +43,23 @@ const ContactForm = () => {
 
     setIsSubmitting(true);
     try {
-      const messageData: ContactMessageInsert = {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        subject: formData.subject.trim(),
-        message: formData.message.trim(),
-        user_id: null,
-      };
-
-      const result = await contactService.insertMessage(messageData);
-      if (result.error) throw new Error(result.error.message || "Failed to send message");
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+          _subject: `Portfolio contact — ${formData.subject.trim()}`,
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+      const data = await res.json().catch(() => ({}) as Record<string, unknown>);
+      if (!res.ok || data.success === false || data.success === "false") {
+        throw new Error((data.message as string) || "Failed to send message");
+      }
 
       setIsSubmitted(true);
       toast({

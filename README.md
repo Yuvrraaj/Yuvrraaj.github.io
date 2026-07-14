@@ -12,7 +12,7 @@ Personal portfolio of **Yuvraj Jha** — software engineer specializing in **bac
 - **Styling:** Tailwind CSS + shadcn/ui (Radix primitives)
 - **Animation:** Framer Motion (scroll reveals, count-up metrics, page transitions)
 - **Routing:** React Router (route-level code-splitting via `React.lazy`)
-- **Contact form:** Firebase Firestore
+- **Contact form:** [FormSubmit](https://formsubmit.co) — submissions are emailed directly (no server, no database)
 - **Hosting:** GitHub Pages (auto-deploy via GitHub Actions)
 
 ## Design system
@@ -37,11 +37,11 @@ npm run preview  # preview the build
 npm run lint     # eslint
 ```
 
-### Firebase config
+### Contact form
 
-The contact form writes to Firestore. Copy `src/firebase/env.example.ts` to `src/firebase/env.ts` and fill in your
-Firebase web config. The web config is safe to expose to the client — access is governed by **Firestore Security Rules**,
-so lock the `contact_messages` collection to `create`-only from clients and read submissions in the Firebase console.
+The form on `/contact` POSTs to FormSubmit, which emails submissions to the address in
+`src/data/content.ts` (`profile.email`). Replies go straight to the sender. No backend or database is
+involved, so it works on static hosting as-is.
 
 ## Deployment
 
@@ -59,8 +59,6 @@ src/
     ui/              shadcn/ui primitives
   data/content.ts    single source of truth for site content
   pages/             Home, About, Experience, Projects, Resume, Contact, 404
-  firebase/          Firestore config
-  services/          contact submission
 ```
 
 ## License
