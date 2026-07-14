@@ -43,10 +43,12 @@ const ContactForm = () => {
 
     setIsSubmitting(true);
     try {
+      // Form-encoded (not JSON) so the request stays "simple" and skips the
+      // CORS preflight that FormSubmit's endpoint rejects.
       const res = await fetch(FORM_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
           name: formData.name.trim(),
           email: formData.email.trim(),
           subject: formData.subject.trim(),
@@ -54,9 +56,9 @@ const ContactForm = () => {
           _subject: `Portfolio contact — ${formData.subject.trim()}`,
           _template: "table",
           _captcha: "false",
-        }),
+        }).toString(),
       });
-      const data = await res.json().catch(() => ({}) as Record<string, unknown>);
+      const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
       if (!res.ok || data.success === false || data.success === "false") {
         throw new Error((data.message as string) || "Failed to send message");
       }
