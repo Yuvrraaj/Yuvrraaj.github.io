@@ -17,7 +17,13 @@ const ContactForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+    _honey: "", // honeypot — must stay empty for real humans
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -56,6 +62,7 @@ const ContactForm = () => {
           _subject: `Portfolio contact — ${formData.subject.trim()}`,
           _template: "table",
           _captcha: "false",
+          _honey: formData._honey, // FormSubmit drops the message if this is filled
         }).toString(),
       });
       const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
@@ -68,7 +75,7 @@ const ContactForm = () => {
         title: "Message sent",
         description: "Thanks for reaching out — I'll get back to you soon.",
       });
-      setFormData({ name: "", email: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", subject: "", message: "", _honey: "" });
       setTimeout(() => setIsSubmitted(false), 3000);
     } catch (error: any) {
       toast({
@@ -150,6 +157,25 @@ const ContactForm = () => {
             disabled={isSubmitting}
             placeholder="What's on your mind?"
             className={cn(inputClass, "resize-none")}
+          />
+        </div>
+
+        {/* Honeypot: off-screen + aria-hidden + not tabbable, so no human ever
+            fills it. Bots that auto-fill every field trip it and FormSubmit
+            silently discards the message. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden"
+        >
+          <label htmlFor="_honey">Leave this field empty</label>
+          <input
+            id="_honey"
+            name="_honey"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={formData._honey}
+            onChange={handleChange}
           />
         </div>
 
